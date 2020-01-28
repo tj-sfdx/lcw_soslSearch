@@ -1,0 +1,29 @@
+import { LightningElement, track } from "lwc";
+import findContacts from "@salesforce/apex/CanvasSelfServeCtrl.getKBEntries";
+
+export default class canvasSelfService_Search extends LightningElement {
+  @track searchKey = "";
+  @track kbs;
+  @track error;
+
+  handleKeyChange(event) {
+    this.searchKey = event.target.value;
+  }
+
+  handleKeyUp(evt) {
+    const isEnterKey = evt.keyCode === 13;
+    if (isEnterKey) {
+      findContacts({ searchStr: this.searchKey, accId: "0011900000oRAzVAAW" })
+        .then(result => {
+          //console.log("results: " + JSON.stringify(result, null, 2));
+          this.kbs = result[0];
+          this.error = undefined;
+        })
+        .catch(error => {
+        console.log("error: " + JSON.stringify(error, null, 2));
+          this.error = error;
+          this.kbs = undefined;
+        });
+    }
+  }
+}
