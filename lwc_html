@@ -1,0 +1,35 @@
+<template>
+  <lightning-card title="Search Help Guides" icon-name="custom:custom63">
+    <div class="slds-m-around_medium">
+      <lightning-layout vertical-align="end" class="slds-m-bottom_small">
+        <lightning-layout-item flexibility="grow">
+          <div onkeyup={handleKeyUp}>
+            <lightning-input
+              type="search"
+              onchange={handleKeyChange}
+              label="Search"
+              value={searchKey}
+            ></lightning-input>
+          </div>
+        </lightning-layout-item>
+      </lightning-layout>
+      <template if:true={kbs}>
+        <template for:each={kbs} for:item="kb">
+          <lightning-card
+            variant="Narrow"
+            key={kb.Id}
+            title={kb.Name}
+            icon-name="standard:account">
+            <lightning-formatted-rich-text
+              value={kb.Details__c}
+            ></lightning-formatted-rich-text>
+            <lightning-formatted-rich-text
+              value={kb.UpdateRequest__c}
+            ></lightning-formatted-rich-text>
+          </lightning-card>
+        </template>
+      </template>
+    </div>
+    <template if:true={error}> </template>
+  </lightning-card>
+</template>
