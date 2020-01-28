@@ -1,0 +1,14 @@
+public without sharing class CanvasSelfServeCtrl {
+    
+    @AuraEnabled
+    public static List<List<sObject>> getKBEntries(String searchStr, String accId){
+        
+        return [FIND :searchStr IN ALL Fields
+                RETURNING KBEntry__c(Id,Details__c,EndUserScript__c,KB__c,Name WHERE KB__c IN 
+					(SELECT Customer_KB__c 
+                     FROM Customer_KB_Association__c 
+                     WHERE Account__c = :accId))
+                WITH HIGHLIGHT];
+    }
+    
+}
